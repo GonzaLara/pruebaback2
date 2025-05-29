@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { usersManager } from "../../data/manager.mongo.js";
-// import passport from "../../middlewares/passport.mid.js";
 import passportCb from "../../middlewares/passportCb.mid.js";
 
 const usersRouter = Router();
