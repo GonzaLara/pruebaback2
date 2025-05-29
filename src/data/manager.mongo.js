@@ -8,7 +8,8 @@ class ManagerMongo {
   }
   createOne = async (data) => await this.model.create(data);
   readAll = async (filter) => await this.model.find(filter).lean();
-  readBy = async (data) => await this.model.find(data).lean();
+  // readBy = async (data) => await this.model.find(data).lean();
+  readBy = async (data) => await this.model.findOne(data).lean();
   readById = async (data) => await this.model.findById(data).lean();
   updateById = async (id, data) => await this.model.findByIdAndUpdate(id, data);
   destroyById = async (id) => await this.model.findByIdAndDelete(id);
