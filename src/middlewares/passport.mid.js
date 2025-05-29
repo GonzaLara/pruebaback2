@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
+import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { compareHash, createHash } from "../helpers/hash.util.js";
 import { usersManager } from "../data/manager.mongo.js";
 import { createToken } from "../helpers/token.util.js";
@@ -19,17 +20,19 @@ passport.use(
       try {
         const { city } = req.body;
         if (!city) {
-          const error = new Error("Datos invalidos");
-          error.statusCode = 400;
-          throw error;
+          return done(null, null, {
+            message: "Datos invalidos",
+            statusCode: 400,
+          });
         }
 
         // validar si el usuario ya fue registrado
         let user = await usersManager.readBy({ email });
         if (user) {
-          const error = new Error("Credenciales invalidas");
-          error.statusCode = 401;
-          throw error;
+          return done(null, null, {
+            message: "Credenciales invalidas",
+            statusCode: 401,
+          });
         }
 
         // registrar usuario, crearlo con la contraseña protegida
@@ -54,17 +57,19 @@ passport.use(
         // validar si el usuario ya fue registrado
         let user = await usersManager.readBy({ email });
         if (!user) {
-          const error = new Error("Credenciales invalidas");
-          error.statusCode = 401;
-          throw error;
+          return done(null, null, {
+            message: "Credenciales invalidas",
+            statusCode: 401,
+          });
         }
 
         const verify = compareHash(password, user?.password);
         // validar si la contraseña es correcta
         if (!verify) {
-          const error = new Error("Credenciales invalidas");
-          error.statusCode = 401;
-          throw error;
+          return done(null, null, {
+            message: "Credenciales invalidas",
+            statusCode: 401,
+          });
         }
 
         const data = {
@@ -114,6 +119,60 @@ passport.use(
 
         const token = createToken(data);
         user.token = token;
+        done(null, user);
+      } catch (error) {
+        done(error);
+      }
+    }
+  )
+);
+
+passport.use(
+  "user",
+  new JwtStrategy(
+    {
+      secretOrKey: process.env.SECRET,
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req) => req?.signedCookies?.token,
+      ]),
+    },
+    async (data, done) => {
+      try {
+        const { _id, role, email } = data;
+        const user = await usersManager.readBy({ _id, role, email });
+        if (!user) {
+          return done(null, null, {
+            message: "Prohibido",
+            statusCode: 403,
+          });
+        }
+        done(null, user);
+      } catch (error) {
+        done(error);
+      }
+    }
+  )
+);
+
+passport.use(
+  "admin",
+  new JwtStrategy(
+    {
+      secretOrKey: process.env.SECRET,
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req) => req?.signedCookies?.token,
+      ]),
+    },
+    async (data, done) => {
+      try {
+        const { _id, role, email } = data;
+        const user = await usersManager.readBy({ _id, role, email });
+        if (!user || user?.role !== "ADMIN") {
+          return done(null, null, {
+            message: "Prohibido",
+            statusCode: 403,
+          });
+        }
         done(null, user);
       } catch (error) {
         done(error);
