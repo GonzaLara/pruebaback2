@@ -3,6 +3,9 @@ import express, { json, urlencoded } from "express";
 import { engine } from "express-handlebars";
 import __dirname from "./utils.js";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
+// import session from "express-session";
+// import MongoStore from "connect-mongo";
 import router from "./src/routers/index.router.js";
 import pathHandler from "./src/middlewares/pathHandler.mid.js";
 import errorHandler from "./src/middlewares/errorHandler.mid.js";
@@ -23,6 +26,11 @@ server.set("view engine", "handlebars");
 server.set("views", __dirname + "/src/views");
 
 // Config middlewares
+// Session
+// server.use(session({secret: process.env.SECRET, resave: true, saveUninitialized: true, store: new MongoStore({mongoUrl: process.env.URL_MONGO, ttl: 7 * 24 * 60 * 60,}),}));
+
+// Cookies
+server.use(cookieParser(process.env.SECRET));
 server.use(urlencoded({ extended: true }));
 server.use(json());
 server.use(express.static("public"));
