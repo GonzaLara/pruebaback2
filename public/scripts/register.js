@@ -8,15 +8,19 @@ const register = async () => {
       avatar: document.querySelector("#avatar").value,
       city: document.querySelector("#city").value,
     };
+
     const opts = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
+      credentials: "same-origin",
     };
+
     const url = "/api/auth/register";
     let response = await fetch(url, opts);
     response = await response.json();
     console.log(response);
+
     if (response.error) {
       alert(response.error);
     } else {

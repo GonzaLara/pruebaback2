@@ -13,34 +13,30 @@
       * { margin: 0 !important; padding: 0 !important; }
     </style>
   </head>
+
   <body class="d-flex flex-column" style="min-height: 100vh;">
     <nav class="navbar navbar-expand-md bg-success">
       <div class="container-fluid">
-        <a class="btn btn-light py-1 px-2 m-1" href="/">HOME</a>
-        <button
-          class="navbar-toggler btn btn-light m-1"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <a class="navbar-brand text-white fw-bold ms-2" href="/">HOME</a>
+
+        <button class="navbar-toggler btn btn-light m-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav" id="opts">
-          </div>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <div class="navbar-nav d-flex align-items-center gap-2" id="opts">
+        </div>
         </div>
       </div>
     </nav>
+
     {{{body}}}
-    <script src="/scripts/navbar.js"></script> 
+
+    <script src="/scripts/navbar.js"></script>
   </body>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"
-  >
+    crossorigin="anonymous">
   </script>
 </html>

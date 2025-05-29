@@ -16,16 +16,15 @@ const signoutCb = (req, res) => {
 };
 
 const onlineCb = async (req, res) => {
-  // Validar al usuario que esta conectado con las cookies
   const { token } = req.signedCookies;
   const dataToken = verifyToken(token);
-  // Validar que es un usuario de la base de datos
   let user = await usersManager.readBy({ _id: dataToken?._id });
+
   if (!user) {
-    return res.json401("Credenciales invalidas");
+    return res.json401("Credenciales inválidas");
   }
-  const { password, createdAt, updatedAt, __v, ...rest } = user;
-  res.json200(rest);
+
+  res.json200(user);
 };
 
 const badAuthCb = (req, res) => res.json401();
@@ -41,10 +40,14 @@ class AuthRouter extends RouterHelper {
     this.create("/register", ["PUBLIC"], passportCb("register"), registerCb);
     this.create("/login", ["PUBLIC"], passportCb("login"), loginCb);
     this.create("/signout", ["USER", "ADMIN"], signoutCb);
-    this.create("/online", ["USER", "ADMIN"], onlineCb);
+    this.read("/online", ["USER", "ADMIN"], onlineCb);
     this.read("/bad-auth", ["PUBLIC"], badAuthCb);
     this.read("/forbidden", ["PUBLIC"], forbiddenCb);
-    this.read("/google", ["PUBLIC"], passportCb("google", { scope: ["email", "profile"] }));
+    this.read(
+      "/google",
+      ["PUBLIC"],
+      passportCb("google", { scope: ["email", "profile"] })
+    );
     this.read("/google/redirect", ["PUBLIC"], passportCb("google"), loginCb);
   };
 }
