@@ -9,13 +9,9 @@ import { createToken } from "../helpers/token.util.js";
 const callbackURL = "http://localhost:8080/api/auth/google/redirect";
 
 passport.use(
-  // Nombre de la estrategia
   "register",
-  // Constructor de la estrategia
   new LocalStrategy(
-    // Objeto de configuracion de la estrategia
     { passReqToCallback: true, usernameField: "email" },
-    // Callback de la logica de la estrategia
     async (req, email, password, done) => {
       try {
         const { city } = req.body;
@@ -26,7 +22,6 @@ passport.use(
           });
         }
 
-        // validar si el usuario ya fue registrado
         let user = await usersManager.readBy({ email });
         if (user) {
           return done(null, null, {
@@ -35,11 +30,9 @@ passport.use(
           });
         }
 
-        // registrar usuario, crearlo con la contraseña protegida
         req.body.password = createHash(password);
         user = await usersManager.createOne(req.body);
-        // Gracias a este done se agregan los datos del usuario
-        // al objeto de requerimientos(req.user)
+
         done(null, user);
       } catch (error) {
         done(error);
@@ -54,7 +47,6 @@ passport.use(
     { passReqToCallback: true, usernameField: "email" },
     async (req, email, password, done) => {
       try {
-        // validar si el usuario ya fue registrado
         let user = await usersManager.readBy({ email });
         if (!user) {
           return done(null, null, {
@@ -64,7 +56,6 @@ passport.use(
         }
 
         const verify = compareHash(password, user?.password);
-        // validar si la contraseña es correcta
         if (!verify) {
           return done(null, null, {
             message: "Credenciales invalidas",

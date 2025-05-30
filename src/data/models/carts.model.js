@@ -14,7 +14,7 @@ const schema = new Schema(
     state: {
       type: String,
       default: "reserved",
-      enum: ["reserver", "paid", "delivered"],
+      enum: ["reserved", "paid", "delivered"],
       index: true,
     },
   },
@@ -26,7 +26,7 @@ const schema = new Schema(
 schema.pre(/^find/, function () {
   this.populate("user_id", "email avatar").populate(
     "product_id",
-    "title price stock"
+    "title price stock image"
   );
 });
 
