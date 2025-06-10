@@ -1,12 +1,13 @@
 import RouterHelper from "../../helpers/router.helper.js";
-import { cartsManager } from "../../data/manager.mongo.js";
-import { productsManager } from "../../data/manager.mongo.js";
+import { cartsManager } from "../../dao/mongo/dao.mongo.js";
+// import { productsManager } from "../../dao/mongo/dao.mongo.js";
+import productsRepository from "../../repositories/products.repository.js";
 
 const createOne = async (req, res) => {
   const { product_id, quantity = 1 } = req.body;
   const user_id = req.user._id;
 
-  const product = await productsManager.readById(product_id);
+  const product = await productsRepository.readById(product_id);
   if (!product) return res.json404("Producto no encontrado");
 
   let cartItem = await cartsManager.readBy({ product_id, user_id });

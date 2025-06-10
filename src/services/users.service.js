@@ -1,14 +1,14 @@
-import { usersManager } from "../data/manager.mongo.js";
+import usersRepository from "../repositories/users.repository.js";
 
 class UsersService {
   constructor() {
-    this.manager = usersManager;
-  }
-  createOne = async (data) => await usersManager.createOne(data);
-  readAll = async (filter) => await usersManager.readAll(filter);
-  readById = async (id) => await usersManager.readById(id);
-  updateById = async (id, data) => await usersManager.updateById(id);
-  destroyById = async (id) => await usersManager.destroyById(id);
+    this.repository = usersRepository;
+  } 
+  createOne = async (data) => await this.repository.createOne(data);
+  readAll = async (filter) => await this.repository.readAll(filter);
+  readById = async (id) => await this.repository.readById(id);
+  updateById = async (id, data) => await this.repository.updateById(id);
+  destroyById = async (id) => await this.repository.destroyById(id);
 }
 
 const usersService = new UsersService();
