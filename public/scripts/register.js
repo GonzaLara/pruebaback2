@@ -19,7 +19,6 @@ const register = async () => {
     const url = "/api/auth/register";
     let response = await fetch(url, opts);
     response = await response.json();
-    console.log(response);
 
     if (response.error) {
       alert(response.error);
