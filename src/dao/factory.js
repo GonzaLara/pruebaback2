@@ -6,7 +6,7 @@ let dao = {};
 switch (PERSISTENCE) {
   case "memory":
     {
-        console.log("conectado a memory");
+      console.log("conectado a memory");
       const { usersManager, productsManager, cartsManager } = await import(
         "./memory/dao.memory.js"
       );
@@ -16,14 +16,14 @@ switch (PERSISTENCE) {
 
   case "fs":
     {
-        console.log("conectado a fs");
+      console.log("conectado a fs");
       const { usersManager, productsManager, cartsManager } = await import(
         "./fs/dao.fs.js"
       );
       dao = { usersManager, productsManager, cartsManager };
     }
     break;
-  default: /* por default se deja mongo */
+  default:
     {
       await dbConnect(URL_MONGO);
       const { usersManager, productsManager, cartsManager } = await import(

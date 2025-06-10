@@ -11,7 +11,7 @@ class AuthRouter extends RouterHelper {
     this.create("/register", ["PUBLIC"], passportCb("register"), authController.registerCb);
     this.create("/login", ["PUBLIC"], passportCb("login"), authController.loginCb);
     this.create("/signout", ["USER", "ADMIN"], authController.signoutCb);
-    this.create("/online", ["USER", "ADMIN"], authController.onlineCb);
+    this.read("/online", ["USER", "ADMIN"], authController.onlineCb);
     this.read("/bad-auth", ["PUBLIC"], authController.badAuthCb);
     this.read("/forbidden", ["PUBLIC"], authController.forbiddenCb);
     this.read(

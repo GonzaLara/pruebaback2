@@ -1,7 +1,8 @@
 import RouterHelper from "../helpers/router.helper.js";
 // import { productsManager } from "../dao/factory.js";
 import productsRepository from "../repositories/products.repository.js";
-import { cartsManager } from "../dao/mongo/dao.mongo.js";
+// import { cartsManager } from "../dao/mongo/dao.mongo.js";
+import cartsRepository from "../repositories/carts.repository.js";
 
 const homeViewCb = async (req, res) => {
   const products = await productsRepository.readAll();
@@ -31,7 +32,7 @@ const profileViewCb = async (req, res) => {
 
 const cartViewCb = async (req, res) => {
   const user_id = req.user._id;
-  const cartItems = await cartsManager.readAll({ user_id });
+  const cartItems = await cartsRepository.readAll({ user_id });
   res.status(200).render("cart", { cartItems });
 };
 

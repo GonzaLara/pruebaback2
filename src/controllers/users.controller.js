@@ -94,4 +94,5 @@ const destroyById = async (req, res, next) => {
     next(error);
   }
 };
+
 export { createOne, readAll, readById, updateById, destroyById }
