@@ -5,7 +5,6 @@ import { verifyToken } from "../helpers/token.util.js";
 const setupPolicies = (policies) => async (req, res, next) => {
   try {
     if (policies.includes("PUBLIC")) return next();
-
     const token = req?.signedCookies?.token;
     if (!token) return res.json401("Token ausente");
 

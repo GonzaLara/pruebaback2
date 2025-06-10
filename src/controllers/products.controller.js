@@ -13,7 +13,7 @@ class ProductsController {
   readAll = async (req, res) => {
     const filter = req.query;
     const all = await this.service.readAll(filter);
-    if (all.lenght > 0) {
+    if (all.length > 0) {
       res.json200(all);
     } else {
       res.json404();
