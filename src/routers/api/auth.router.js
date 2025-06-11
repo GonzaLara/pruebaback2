@@ -8,8 +8,18 @@ class AuthRouter extends RouterHelper {
     this.init();
   }
   init = () => {
-    this.create("/register", ["PUBLIC"], passportCb("register"), authController.registerCb);
-    this.create("/login", ["PUBLIC"], passportCb("login"), authController.loginCb);
+    this.create(
+      "/register",
+      ["PUBLIC"],
+      passportCb("register"),
+      authController.registerCb
+    );
+    this.create(
+      "/login",
+      ["PUBLIC"],
+      passportCb("login"),
+      authController.loginCb
+    );
     this.create("/signout", ["USER", "ADMIN"], authController.signoutCb);
     this.read("/online", ["USER", "ADMIN"], authController.onlineCb);
     this.read("/bad-auth", ["PUBLIC"], authController.badAuthCb);
@@ -19,7 +29,19 @@ class AuthRouter extends RouterHelper {
       ["PUBLIC"],
       passportCb("google", { scope: ["email", "profile"] })
     );
-    this.read("/google/redirect", ["PUBLIC"], passportCb("google"), authController.loginCb);
+    this.read(
+      "/google/redirect",
+      ["PUBLIC"],
+      passportCb("google"),
+      authController.loginCb
+    );
+    // Esto es nuevo
+    this.read(
+      "/verify/:email/:verifyCode",
+      ["PUBLIC"],
+      authController.verifyCb
+    );
+    // 
   };
 }
 

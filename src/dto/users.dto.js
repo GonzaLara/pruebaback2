@@ -15,9 +15,13 @@ class UsersDTO {
     this.password = createHash(data.password);
     this.avatar = data.avatar;
     this.role = data.role || "USER";
-    if(PERSISTENCE != "mongo") {
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+    // Esto es nuevo
+    this.isVerified = data.isVerified || false;
+    // 
+    this.verifyCode = data.verifyCode || crypto.randomBytes(12).toString("hex");
+    if (PERSISTENCE != "mongo") {
+      this.createdAt = new Date();
+      this.updatedAt = new Date();
     }
   }
 }

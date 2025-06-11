@@ -30,8 +30,7 @@ passport.use(
             statusCode: 401,
           });
         }
-        // El repositorio se encarga de hashear
-        // req.body.password = createHash(password);
+
         user = await usersRepository.createOne(req.body);
         done(null, user);
       } catch (error) {
@@ -55,10 +54,18 @@ passport.use(
           });
         }
 
-        const verify = compareHash(password, user?.password);
-        if (!verify) {
+        const verifyPass = compareHash(password, user.password);
+        if (!verifyPass) {
           return done(null, null, {
             message: "Credenciales invalidas",
+            statusCode: 401,
+          });
+        }
+
+        const { isVerified } = user;
+        if (!isVerified) {
+          return done(null, null, {
+            message: "Tenes que verificar tu cuenta primero",
             statusCode: 401,
           });
         }

@@ -1,7 +1,5 @@
 import RouterHelper from "../helpers/router.helper.js";
-// import { productsManager } from "../dao/factory.js";
 import productsRepository from "../repositories/products.repository.js";
-// import { cartsManager } from "../dao/mongo/dao.mongo.js";
 import cartsRepository from "../repositories/carts.repository.js";
 
 const homeViewCb = async (req, res) => {
@@ -36,6 +34,12 @@ const cartViewCb = async (req, res) => {
   res.status(200).render("cart", { cartItems });
 };
 
+// Esto es nuevo
+const verifyViewCb = async (req, res) => {
+  const { email } = req.params
+  res.status(200).render("verify", { email });
+};
+
 class ViewsRouter extends RouterHelper {
   constructor() {
     super();
@@ -48,9 +52,9 @@ class ViewsRouter extends RouterHelper {
     this.render("/login", ["PUBLIC"],loginViewCb);
     this.render("/profile", ["USER", "ADMIN"],profileViewCb);
     this.render("/cart", ["USER", "ADMIN"], cartViewCb);
+    this.render("/verify/:email", ["PUBLIC"], verifyViewCb)
   };
 }
 
 const viewsRouter = new ViewsRouter().getRouter();
-
 export default viewsRouter;
