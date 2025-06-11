@@ -1,14 +1,26 @@
-const resetUserPass = async (email, verifyCode) => {
+import jwt from "jsonwebtoken";
+import transport from "./email.util.js";
+
+const sendResetPasswordEmail = async (user) => {
+  const token = jwt.sign(
+    { _id: user._id, email: user.email },
+    process.env.SECRET,
+    { expiresIn: "1h" }
+  );
+
+  const link = `${process.env.URL}/reset-password/${token}`;
+
   await transport.sendMail({
     from: `EQUIPO CODER <${process.env.GOOGLE_EMAIL}>`,
-    to: email,
-    subject: "CORREO DE RESTAURACION DE CONTRASEÑA",
+    to: user.email,
+    subject: "Restablecer contraseña",
     html: `
-      <section>
-        <h1>RESTAURAR CONTRASEÑA</h1>
-        <a href="${process.env.URL}/reset/${email}">RESTAURAR</a>
-      </section>
+      <h1>Restaurar contraseña</h1>
+      <p>Hacé clic en el siguiente enlace para establecer una nueva contraseña:</p>
+      <a href="${link}">Restablecer contraseña</a>
+      <p>Este enlace expirará en 1 hora.</p>
     `,
   });
 };
-export default resetUserPass;
+
+export default sendResetPasswordEmail;

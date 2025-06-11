@@ -7,7 +7,6 @@ import cookieParser from "cookie-parser";
 import router from "./src/routers/index.router.js";
 import pathHandler from "./src/middlewares/pathHandler.mid.js";
 import errorHandler from "./src/middlewares/errorHandler.mid.js";
-// import dbConnect from "./src/helpers/dbConnect.helper.js";
 import argsHelper from "./src/helpers/args.helper.js";
 
 // Config server
@@ -16,7 +15,6 @@ const port = process.env.PORT || 8080;
 const ready = async () => {
   console.log("Servido listo en el puerto " + port);
   console.log("mode: " + argsHelper.mode);
-  // await dbConnect(process.env.URL_MONGO);
 };
 server.listen(port, ready);
 

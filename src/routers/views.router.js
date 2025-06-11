@@ -39,9 +39,13 @@ const verifyViewCb = async (req, res) => {
   res.status(200).render("verify", { email });
 };
 
-const resetViewCb = async (req, res) => {
-  const { email } = req.params;
-  res.status(200).render("reset", { email });
+const forgotViewCb = async (req, res) => {
+  res.status(200).render("forgot");
+};
+
+const resetPasswordTokenViewCb = async (req, res) => {
+  const { token } = req.params;
+  res.status(200).render("reset", { token });
 };
 
 class ViewsRouter extends RouterHelper {
@@ -57,7 +61,8 @@ class ViewsRouter extends RouterHelper {
     this.render("/profile", ["USER", "ADMIN"], profileViewCb);
     this.render("/cart", ["USER", "ADMIN"], cartViewCb);
     this.render("/verify/:email", ["PUBLIC"], verifyViewCb)
-    this.render("/reset/:email", ["PUBLIC"], resetViewCb);
+    this.render("/forgot", ["PUBLIC"], forgotViewCb);
+    this.render("/reset-password/:token", ["PUBLIC"], resetPasswordTokenViewCb);
   };
 }
 

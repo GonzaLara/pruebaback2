@@ -1,11 +1,31 @@
 <main class="d-flex flex-column align-items-center w-100 flex-grow-1">
-  <h1 class="bg-success-subtle p-2 text-center text-success w-100">FORMULARIO DE RESTAURAR CONTRASEÑA</h1>
-  <form class="m-3 d-flex flex-column justify-content-evenly flex-wrap align-items-center" style="width: 380px;">
-    <input class="m-2 p-2 text-center w-100" type="email" id="email" placeholder="EMAIL" />
-    <input class="m-2 p-2 text-center w-100" type="password" id="password" placeholder="PASSWORD" />
-    <input class="m-2 p-2 text-center w-100" type="password" id="confirm" placeholder="NEW PASSWORD" />
-    <input class="m-2 p-2 text-center btn btn-success w-100" type="button" id="reset" value="RESTAURAR CONTRASEÑA" />
+  <h1 class="bg-info-subtle p-2 text-center text-info w-100">NUEVA CONTRASEÑA</h1>
+  <form id="resetForm" class="m-3 d-flex flex-column align-items-center" style="width: 380px;">
+    <input type="password" id="password" placeholder="Nueva contraseña" class="m-2 p-2 w-100 text-center" />
+    <input type="password" id="confirm" placeholder="Confirmar contraseña" class="m-2 p-2 w-100 text-center" />
+    <button type="submit" class="btn btn-info w-100 m-2">ACTUALIZAR</button>
   </form>
 </main>
 
-<script src="/scripts/reset.js"></script>
+<script type="module">
+  document.querySelector("#resetForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const password = document.querySelector("#password").value;
+    const confirm = document.querySelector("#confirm").value;
+    const token = window.location.pathname.split("/").pop();
+
+    const res = await fetch(`/api/auth/reset/${token}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password, confirm }),
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      alert("Contraseña actualizada");
+      location.replace("/login");
+    } else {
+      alert(result.error || "Error");
+    }
+  });
+</script>

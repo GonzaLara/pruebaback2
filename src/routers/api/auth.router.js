@@ -8,16 +8,16 @@ class AuthRouter extends RouterHelper {
     this.init();
   }
   init = () => {
-    this.create("/register", ["PUBLIC"], passportCb("register"), authController.registerCb);
+ this.create("/register", ["PUBLIC"], passportCb("register"), authController.registerCb);
     this.create("/login", ["PUBLIC"], passportCb("login"), authController.loginCb);
     this.create("/signout", ["USER", "ADMIN"], authController.signoutCb);
     this.read("/online", ["USER", "ADMIN"], authController.onlineCb);
+    this.read("/verify/:email/:verifyCode", ["PUBLIC"], authController.verifyCb);
+    this.create("/send-reset", ["PUBLIC"], authController.sendResetEmailCb);
+    this.read("/reset/:token", ["PUBLIC"], authController.resetFormCb);
+    this.create("/reset/:token", ["PUBLIC"], authController.resetConfirmCb);
     this.read("/bad-auth", ["PUBLIC"], authController.badAuthCb);
     this.read("/forbidden", ["PUBLIC"], authController.forbiddenCb);
-    this.read("/google", ["PUBLIC"], passportCb("google", { scope: ["email", "profile"] }));
-    this.read("/google/redirect", ["PUBLIC"], passportCb("google"), authController.loginCb);
-    this.read("/verify/:email/:verifyCode", ["PUBLIC"], authController.verifyCb);
-    this.create("/reset", ["PUBLIC"], authController.resetPasswordCb);
   };
 }
 
