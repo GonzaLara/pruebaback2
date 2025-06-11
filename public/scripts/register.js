@@ -1,3 +1,5 @@
+import { Toast } from "./toast.js";
+
 const register = async () => {
   try {
     const data = {
@@ -21,12 +23,22 @@ const register = async () => {
     response = await response.json();
 
     if (response.error) {
-      alert(response.error);
+      Toast.fire({
+        icon: "error",
+        title: response.error,
+      });
     } else {
-      location.replace("/login");
+      Toast.fire({
+        icon: "success",
+        title: "Registrado correctamente. Verifica tu email.",
+      });
+      setTimeout(() => location.replace("/login"), 1200);
     }
   } catch (error) {
-    alert(error.message);
+    Toast.fire({
+      icon: "error",
+      title: error.message,
+    });
   }
 };
 

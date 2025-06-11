@@ -1,3 +1,5 @@
+import { Toast } from "./toast.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const addButton = document.getElementById("addToCart");
   if (!addButton) return;
@@ -8,23 +10,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const quantity = parseInt(document.getElementById("quantity").value);
 
     if (quantity < 1 || quantity > stock) {
-      alert("Cantidad invalida");
+      Swal.fire("Error", "Cantidad invalida", "error");
       return;
     }
 
-    const response = await fetch("/api/carts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "same-origin",
-      body: JSON.stringify({ product_id: pid, quantity }),
-    });
+    try {
+      const response = await fetch("/api/carts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ product_id: pid, quantity }),
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (response.ok) {
-      alert("Producto agregado al carrito");
-    } else {
-      alert((result.error || "No se pudo agregar"));
+      if (response.ok) {
+        Toast.fire({
+          icon: "success",
+          title: "Producto agregado al carrito",
+        });
+      } else {
+        Swal.fire("Error", result.error || "No se pudo agregar", "error");
+      }
+    } catch (error) {
+      Swal.fire("Error", error.message, "error");
     }
   });
 });

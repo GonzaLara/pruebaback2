@@ -1,0 +1,18 @@
+<main class="container mt-5">
+  <h1 class="text-center text-primary mb-4">Tu Perfil</h1>
+  <div class="card mx-auto" style="max-width: 500px;">
+    <div class="card-body text-center">
+      {{#if user.avatar}}
+        <img src="{{user.avatar}}" alt="Avatar" class="rounded-circle mb-3" width="100" height="100" />
+      {{/if}}
+      <a class="btn btn-info py-1 px-2 m-1" href="/profile">
+        <i class="bi bi-person-circle"></i> PERFIL
+      </a>
+      <h4 class="card-title">{{user.name}}</h4>
+      <p class="card-text"><strong>Email: </strong> {{user.email}}</p>
+      <p class="card-text"><strong>Ciudad: </strong> {{user.city}}</p>
+      <p class="card-text"><strong>Rol: </strong> {{user.role}}</p>
+      <p class="card-text"><strong>Verificado: </strong> {{#if user.isVerified}}<i class="bi bi-patch-check-fill"></i>{{else}}<i class="bi bi-slash-circle-fill"></i>{{/if}}</p>
+    </div>
+  </div>
+</main>

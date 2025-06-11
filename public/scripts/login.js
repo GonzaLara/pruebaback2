@@ -1,3 +1,5 @@
+import { Toast } from "./toast.js";
+
 const login = async () => {
   try {
     const data = {
@@ -17,12 +19,13 @@ const login = async () => {
     response = await response.json();
 
     if (response.error) {
-      alert(response.error);
+      Toast.fire({ icon: "error", title: response.error });
     } else {
-      location.replace("/");
+      Toast.fire({ icon: "success", title: "Bienvenido" });
+      setTimeout(() => location.replace("/"), 1200);
     }
   } catch (error) {
-    alert(error.message);
+    Toast.fire({ icon: "error", title: error.message });
   }
 };
 

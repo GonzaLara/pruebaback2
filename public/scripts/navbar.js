@@ -15,9 +15,9 @@ const renderNavbar = async () => {
     ${data.avatar ? `<img src="${data.avatar}" alt="avatar" style="width:30px; height:30px; border-radius:50%; margin-right:5px;">` : ""}
     Hola, ${data.response?.name || "Usuario"}
   </span>
-  <a class="btn btn-info py-1 px-2 m-1" href="/cart">CARRITO</a>
-  <a class="btn btn-info py-1 px-2 m-1" href="/profile">PERFIL</a>
-  <a class="btn btn-info py-1 px-2 m-1" id="signout" href="#">SALIR</a>
+  <a class="btn btn-info" href="/cart"><i class="bi bi-cart4"></i></a>
+  <a class="btn btn-info" href="/profile"><i class="bi bi-person-circle"></i></a>
+  <a class="btn btn-info" id="signout" href="#"><i class="bi bi-x-circle-fill"></i></a>
 `;
 
 
@@ -32,8 +32,8 @@ const renderNavbar = async () => {
   } catch (error) {
     const optsDiv = document.querySelector("#opts");
     optsDiv.innerHTML = `
-      <a class="btn btn-success py-1 px-2 m-1" href="/login">INGRESAR</a>
-      <a class="btn btn-success py-1 px-2 m-1" href="/register">REGISTRARSE</a>
+      <a class="btn btn-success py-1 px-2 m-1" href="/login"><i class="bi bi-box-arrow-in-right" style="font-size: 1.8rem;"></i></a>
+      <a class="btn btn-success py-1 px-2 m-1" href="/register"><i class="bi bi-pencil-square" style="font-size: 1.7rem;"></i></a>
     `;
   }
 };

@@ -15,13 +15,11 @@ class ApiRouter extends RouterHelper {
     this.use("/products", productsRouter);
     this.use("/carts", cartsRouter);
     this.use("/auth", authRouter);
-    // Esto es nuevo
     this.read("/send/:email", ["PUBLIC"], async (req, res) => {
       const { email } = req.params;
       await sendEmail(email);
       res.json200({ sent: true });
     });
-    // 
   };
 }
 

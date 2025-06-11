@@ -1,5 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .navbar {
   min-height: 80px;
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+body {
+  background-image: url("/assets/img/fondo.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+}
+
+.card {
+  background-color: rgba(57, 57, 57, 0.2);
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }

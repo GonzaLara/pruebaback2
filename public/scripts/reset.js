@@ -4,25 +4,32 @@ const reset = async () => {
     const password = document.querySelector("#password").value;
     const confirm = document.querySelector("#confirm").value;
 
-    if (password !== confirm) return alert("Las contraseñas no coinciden");
+    if (!email || !password || !confirm) {
+      return alert("Todos los campos son obligatorios");
+    }
+
+    if (password !== confirm) {
+      return alert("Las contraseñas no coinciden");
+    }
 
     const url = `/api/auth/reset`;
-    const body = { email, password };
-    let response = await fetch(url, {
+
+    const response = await fetch(url, {
       method: "POST",
-      body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
     });
 
-    response = await response.json();
-    if (response.error) {
-      alert(response.error);
+    const data = await response.json();
+
+    if (data.error) {
+      alert(data.error);
     } else {
       alert("Contraseña actualizada");
       location.replace("/login");
     }
   } catch (error) {
-    alert(error.message);
+    alert("Ocurrio un error: " + error.message);
   }
 };
 
