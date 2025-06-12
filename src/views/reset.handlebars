@@ -7,25 +7,4 @@
   </form>
 </main>
 
-<script type="module">
-  document.querySelector("#resetForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const password = document.querySelector("#password").value;
-    const confirm = document.querySelector("#confirm").value;
-    const token = window.location.pathname.split("/").pop();
-
-    const res = await fetch(`/api/auth/reset/${token}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password, confirm }),
-    });
-
-    const result = await res.json();
-    if (res.ok) {
-      alert("Contraseña actualizada");
-      location.replace("/login");
-    } else {
-      alert(result.error || "Error");
-    }
-  });
-</script>
+<script type="module" src="/scripts/reset.js"></script>

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import transport from "./email.util.js";
+import sendEmail from "./email.util.js";
 
 const sendResetPasswordEmail = async (user) => {
   const token = jwt.sign(
@@ -10,16 +10,15 @@ const sendResetPasswordEmail = async (user) => {
 
   const link = `${process.env.URL}/reset-password/${token}`;
 
-  await transport.sendMail({
-    from: `EQUIPO CODER <${process.env.GOOGLE_EMAIL}>`,
+  await sendEmail({
     to: user.email,
     subject: "Restablecer contraseña",
     html: `
-      <h1>Restaurar contraseña</h1>
-      <p>Hacé clic en el siguiente enlace para establecer una nueva contraseña:</p>
-      <a href="${link}">Restablecer contraseña</a>
-      <p>Este enlace expirará en 1 hora.</p>
-    `,
+    <h1>Restaurar contraseña</h1>
+    <p>Clic en el siguiente enlace para establecer una nueva contraseña:</p>
+    <a href="${link}">Restablecer contraseña</a>
+    <p>Este enlace expira en 1 hora.</p>
+  `,
   });
 };
 

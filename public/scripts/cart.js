@@ -9,15 +9,36 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({ product_id }),
     });
 
+    const result = await res.json();
+
     if (res.ok) {
       Toast.fire({
         icon: "success",
         title: "Unidad eliminada del carrito",
       });
-      setTimeout(() => location.reload(), 2000);
+
+      const qtyElem = document.querySelector(`#qty-${product_id}`);
+      const card = document.querySelector(`#card-${product_id}`);
+
+      if (result.response && result.response.quantity > 0) {
+        if (qtyElem) {
+          qtyElem.textContent = `Cantidad: ${result.response.quantity}`;
+        }
+      } else {
+        if (card) {
+          card.remove();
+        }
+
+        if (document.querySelectorAll(".card").length === 0) {
+          const main = document.querySelector("main");
+          main.innerHTML = `<h1 class="bg-dark-subtle p-3 text-center text-dark w-100 mb-4">MI CARRITO</h1> <p class="text-center text-muted">Carrito vacio</p>`;
+        }
+      }
     } else {
-      const result = await res.json();
-      Swal.fire("Error", result.error || "No se pudo eliminar", "error");
+      Toast.fire({
+        icon: "error",
+        title: result.error || "No se pudo eliminar",
+      });
     }
   };
 
@@ -39,15 +60,28 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({ product_id }),
     });
 
+    const result = await res.json();
+
     if (res.ok) {
       Toast.fire({
         icon: "success",
         title: "Producto eliminado del carrito",
       });
-      setTimeout(() => location.reload(), 1600);
+
+      const card = document.querySelector(`#card-${product_id}`);
+      if (card) {
+        card.remove();
+      }
+
+      if (document.querySelectorAll(".card").length === 0) {
+        const main = document.querySelector("main");
+        main.innerHTML = `<h1 class="bg-dark-subtle p-3 text-center text-dark w-100 mb-4">MI CARRITO</h1> <p class="text-center text-muted">Carrito vacio</p>`;
+      }
     } else {
-      const result = await res.json();
-      Swal.fire("Error", result.error || "No se pudo eliminar", "error");
+      Toast.fire({
+        icon: "error",
+        title: result.error || "No se pudo eliminar",
+      });
     }
   };
 });

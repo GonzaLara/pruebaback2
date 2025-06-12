@@ -5,18 +5,18 @@
     <div class="container">
       <div class="row justify-content-center">
         {{#each cartItems}}
-          <div class="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex">
+          <div class="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex" id="card-{{this.product_id._id}}">
             <div class="card w-100 h-100 shadow-sm border-0">
               <img src="{{this.product_id.image}}" class="card-img-top" style="height: 180px; object-fit: cover;">
               <div class="card-body d-flex flex-column justify-content-between">
                 <div>
                   <h5 class="card-title">{{this.product_id.title}}</h5>
                   <p class="card-text mb-1">USD {{this.product_id.price}}</p>
-                  <p class="mb-1">Cantidad: {{this.quantity}}</p>
+                  <p class="mb-1" id="qty-{{this.product_id._id}}">Cantidad: {{this.quantity}}</p>
                   <p class="text-muted small mb-2">Estado: {{this.state}}</p>
                 </div>
                 <div class="mt-auto d-flex justify-content-between gap-2">
-                  <button class="btn btn-warning btn-sm flex-grow-1" onclick="removeOne('{{this.product_id._id}}')">-1</button>
+                  <button class="btn btn-warning btn-sm flex-grow-1" onclick="removeOne('{{this.product_id._id}}')">Quitar Unidad</button>
                   <button class="btn btn-danger btn-sm flex-grow-1" onclick="removeAll('{{this.product_id._id}}')">Vaciar</button>
                 </div>
               </div>
@@ -26,7 +26,7 @@
       </div>
     </div>
   {{else}}
-    <p class="text-center text-muted">Carrito vacío</p>
+    <p class="text-center text-muted">Carrito vacio</p>
   {{/if}}
 </main>
 

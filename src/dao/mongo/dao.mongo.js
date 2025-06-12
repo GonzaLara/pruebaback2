@@ -10,7 +10,7 @@ class DaoMongo {
   readAll = async (filter) => await this.model.find(filter).lean();
   readBy = async (data) => await this.model.findOne(data).lean();
   readById = async (data) => await this.model.findById(data).lean();
-  updateById = async (id, data) => await this.model.findByIdAndUpdate(id, data);
+  updateById = async (id, data) => await this.model.findByIdAndUpdate(id, data, { new: true }).lean();
   destroyById = async (id) => await this.model.findByIdAndDelete(id);
 }
 

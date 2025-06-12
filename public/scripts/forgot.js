@@ -1,8 +1,13 @@
+import { Toast } from "./toast.js";
+
 document.querySelector("#send").addEventListener("click", async () => {
   const email = document.querySelector("#email").value;
 
   if (!email) {
-    return alert("Debes ingresar un correo");
+    return Toast.fire({
+      icon: "warning",
+      title: "Se necesita un correo",
+    });
   }
 
   const res = await fetch("/api/auth/send-reset", {
@@ -12,10 +17,17 @@ document.querySelector("#send").addEventListener("click", async () => {
   });
 
   const result = await res.json();
+
   if (res.ok) {
-    alert("Correo enviado");
-    location.replace("/login");
+    Toast.fire({
+      icon: "success",
+      title: "Correo enviado",
+    });
+    setTimeout(() => location.replace("/login"), 3000);
   } else {
-    alert(result.error || "Error al enviar correo");
+    Toast.fire({
+      icon: "error",
+      title: result.error || "Error al enviar el correo",
+    });
   }
 });

@@ -1,7 +1,5 @@
 import RouterHelper from "../../helpers/router.helper.js";
-// import { cartsManager } from "../../dao/mongo/dao.mongo.js";
 import cartsRepository from "../../repositories/carts.repository.js";
-// import { productsManager } from "../../dao/mongo/dao.mongo.js";
 import productsRepository from "../../repositories/products.repository.js";
 
 const createOne = async (req, res) => {
@@ -37,12 +35,14 @@ const removeOne = async (req, res) => {
   if (!item) return res.json404("Producto no encontrado en el carrito");
 
   if (item.quantity > 1) {
-    await cartsRepository.updateById(item._id, { quantity: item.quantity - 1 });
+    const updatedItem = await cartsRepository.updateById(item._id, {
+      quantity: item.quantity - 1,
+    });
+    return res.json200(updatedItem);
   } else {
     await cartsRepository.destroyById(item._id);
+    return res.json200(null, "Producto eliminado del carrito");
   }
-
-  res.json200("Unidad eliminada del carrito");
 };
 
 const removeAll = async (req, res) => {

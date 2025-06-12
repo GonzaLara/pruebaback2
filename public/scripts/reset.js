@@ -1,36 +1,51 @@
-const reset = async () => {
+import { Toast } from "./toast.js";
+
+document.querySelector("#resetForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const password = document.querySelector("#password").value;
+  const confirm = document.querySelector("#confirm").value;
+  const token = window.location.pathname.split("/").pop();
+
+  if (!password || !confirm) {
+    return Toast.fire({
+      icon: "warning",
+      title: "Todos los campos son obligatorios",
+    });
+  }
+
+  if (password !== confirm) {
+    return Toast.fire({
+      icon: "error",
+      title: "Las contraseñas no coinciden",
+    });
+  }
+
   try {
-    const email = document.querySelector("#email").value;
-    const password = document.querySelector("#password").value;
-    const confirm = document.querySelector("#confirm").value;
-
-    if (!email || !password || !confirm) {
-      return alert("Todos los campos son obligatorios");
-    }
-
-    if (password !== confirm) {
-      return alert("Las contraseñas no coinciden");
-    }
-
-    const url = `/api/auth/reset`;
-
-    const response = await fetch(url, {
+    const res = await fetch(`/api/auth/reset/${token}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ password, confirm }),
     });
 
-    const data = await response.json();
+    const result = await res.json();
 
-    if (data.error) {
-      alert(data.error);
+    if (res.ok) {
+      Toast.fire({
+        icon: "success",
+        title: "Contraseña actualizada",
+      });
+      setTimeout(() => location.replace("/login"), 3000);
     } else {
-      alert("Contraseña actualizada");
-      location.replace("/login");
+      Toast.fire({
+        icon: "error",
+        title: result.error || "Error al actualizar",
+      });
     }
   } catch (error) {
-    alert("Ocurrio un error: " + error.message);
+    Toast.fire({
+      icon: "error",
+      title: "Error del servidor",
+    });
   }
-};
-
-document.querySelector("#reset").addEventListener("click", reset);
+});

@@ -1,18 +1,38 @@
+import { Toast } from "./toast.js";
+
 const verify = async () => {
   try {
-    const email = document.querySelector('#email').value
-    const code = document.querySelector('#code').value
+    const email = document.querySelector('#email').value;
+    const code = document.querySelector('#code').value;
+
+    if (!code) {
+      return Toast.fire({
+        icon: "warning",
+        title: "Codigo requerido",
+      });
+    }
+
     const url = `/api/auth/verify/${email}/${code}`;
     let response = await fetch(url);
     response = await response.json();
-    console.log(response);
+
     if (response.error) {
-      alert(response.error);
+      Toast.fire({
+        icon: "error",
+        title: "Codigo incorrecto",
+      });
     } else {
-      location.replace("/login")
+      Toast.fire({
+        icon: "success",
+        title: "Ya estas verificado",
+      });
+      setTimeout(() => location.replace("/login"), 3000);
     }
   } catch (error) {
-    alert(error.message);
+    Toast.fire({
+      icon: "error",
+      title: error.message || "Error interno",
+    });
   }
 };
 
